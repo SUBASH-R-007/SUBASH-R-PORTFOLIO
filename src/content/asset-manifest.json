@@ -1,0 +1,51 @@
+{
+  "files": {
+    "/resume/Subash_R_Resume.pdf": {
+      "src": "/resume/Subash_R_Resume.pdf"
+    }
+  },
+  "series": {
+    "/images/achievements/sih": [],
+    "/images/leadership/inovx": [],
+    "/images/projects/campus-app/gallery": [],
+    "/images/projects/kuttykoncepts/gallery": [],
+    "/images/projects/sagar-nethra/gallery": []
+  },
+  "missing": [
+    "/certificates/aws-academy-cloud-architecting.jpg",
+    "/certificates/iitm-foundations-data-science.jpg",
+    "/certificates/india-space-lab.jpg",
+    "/certificates/mongodb-basics.jpg",
+    "/certificates/tansam-power-bi.jpg",
+    "/images/achievements/academic-topper.jpg",
+    "/images/achievements/codesapiens.jpg",
+    "/images/achievements/ieee-cs-ml.jpg",
+    "/images/achievements/kuttykoncepts-hackathon.jpg",
+    "/images/achievements/minister-presentation.jpg",
+    "/images/achievements/sih-2026.jpg",
+    "/images/achievements/smartability.jpg",
+    "/images/experience/niepmd-logo.png",
+    "/images/experience/rec-logo.png",
+    "/images/experience/shakra-logo.png",
+    "/images/leadership/inovx-01.jpg",
+    "/images/leadership/inovx-02.jpg",
+    "/images/leadership/inovx-03.jpg",
+    "/images/profile/portrait.jpg",
+    "/images/projects/campus-app/cover.jpg",
+    "/images/projects/campus-app/gallery-01.jpg",
+    "/images/projects/campus-app/gallery-02.jpg",
+    "/images/projects/campus-app/gallery-03.jpg",
+    "/images/projects/hospital-management/cover.jpg",
+    "/images/projects/kuttykoncepts/cover.jpg",
+    "/images/projects/kuttykoncepts/gallery-01.jpg",
+    "/images/projects/kuttykoncepts/gallery-02.jpg",
+    "/images/projects/kuttykoncepts/gallery-03.jpg",
+    "/images/projects/localink/cover.jpg",
+    "/images/projects/price-prediction/cover.jpg",
+    "/images/projects/sagar-nethra/cover.jpg",
+    "/images/projects/sagar-nethra/gallery-01.jpg",
+    "/images/projects/sagar-nethra/gallery-02.jpg",
+    "/images/projects/sagar-nethra/gallery-03.jpg",
+    "/images/projects/traffic-dashboard/cover.jpg"
+  ]
+}
