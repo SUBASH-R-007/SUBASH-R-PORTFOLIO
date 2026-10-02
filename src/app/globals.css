@@ -518,3 +518,11 @@ main > section,
 main > article {
   overflow-x: clip;
 }
+
+/* Neural Map cross-highlight: chips for the hovered skill glow site-wide. */
+.chip[data-glow="true"] {
+  color: var(--accent-1);
+  box-shadow:
+    inset 0 0 0 1px var(--accent-1),
+    0 0 16px -2px var(--glow);
+}
