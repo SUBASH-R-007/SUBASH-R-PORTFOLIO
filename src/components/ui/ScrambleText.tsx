@@ -1,14 +1,14 @@
 "use client";
 
 import { useInView } from "motion/react";
-import { useEffect, useRef, type ElementType } from "react";
+import { useEffect, useRef } from "react";
 import { useReducedMotion } from "@/lib/hooks";
 
 const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&<>/\\=+*";
 
 interface Props {
   text: string;
-  as?: ElementType;
+  as?: "span" | "h1" | "h2" | "h3" | "p";
   className?: string;
   /** ms for the full decrypt. */
   duration?: number;
@@ -32,7 +32,7 @@ export function ScrambleText({
   ready = true,
   replay = false,
 }: Props) {
-  const ref = useRef<HTMLElement>(null);
+  const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "0px 0px -8% 0px" });
   const reduced = useReducedMotion();
   const played = useRef<string | null>(null);
@@ -67,7 +67,8 @@ export function ScrambleText({
     };
   }, [text, inView, ready, reduced, duration, delay, replay]);
 
-  const Tag = as;
+  // The tag only changes the element name; typing it as span keeps the ref simple.
+  const Tag = as as "span";
   return (
     <Tag ref={ref} className={className} aria-label={text} suppressHydrationWarning>
       {text}

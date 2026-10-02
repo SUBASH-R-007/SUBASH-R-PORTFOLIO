@@ -22,3 +22,6 @@ export const stagger = (staggerChildren = 0.08, delayChildren = 0): Variants => 
 
 /** Shared viewport settings for whileInView reveals. */
 export const VIEWPORT = { once: true, margin: "0px 0px -12% 0px" } as const;
+
+/** Round SVG coordinates so server and client trig output match during hydration. */
+export const r2 = (n: number) => Math.round(n * 100) / 100;
