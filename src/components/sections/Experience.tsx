@@ -9,7 +9,7 @@ import type { Experience as Exp } from "@/content/types";
 import { ChipList } from "@/components/ui/Chip";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { SmartImage } from "@/components/ui/SmartImage";
-import { gsap } from "@/lib/gsap";
+import { withGsap } from "@/lib/gsap";
 import { useReducedMotion } from "@/lib/hooks";
 import { EASE } from "@/lib/motion";
 import { useActiveSection } from "@/lib/useActiveSection";
@@ -50,7 +50,15 @@ function Card({ xp, active }: { xp: Exp; active: boolean }) {
     >
       <div className="flex flex-wrap items-start gap-4">
         <div className="relative size-12 shrink-0 overflow-hidden rounded-lg bg-bg-elev ring-1 ring-line">
-          <SmartImage src={xp.logo} alt={`${xp.organisationShort} logo`} kind="logo" sizes="48px" fit="contain" compactPlaceholder imgClassName="p-1.5" />
+          <SmartImage
+            src={xp.logo}
+            alt={`${xp.organisationShort} logo`}
+            kind="logo"
+            sizes="48px"
+            fit="contain"
+            compactPlaceholder
+            imgClassName="p-1.5"
+          />
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
@@ -73,7 +81,7 @@ function Card({ xp, active }: { xp: Exp; active: boolean }) {
           </div>
           <h3 className="mt-2 font-display text-xl font-semibold leading-snug text-fg sm:text-2xl">{xp.role}</h3>
           <p className="mt-1 text-sm text-fg-muted">
-            {xp.organisation} <span className="text-fg-muted/50">·</span> {xp.location}
+            {xp.organisation} <span className="text-fg-muted">·</span> {xp.location}
           </p>
         </div>
       </div>
@@ -91,7 +99,10 @@ function Card({ xp, active }: { xp: Exp; active: boolean }) {
       <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
         <ChipList ids={xp.tags} />
         {xp.projectSlug && (
-          <Link href={`/projects/${xp.projectSlug}`} className="group inline-flex items-center gap-1 font-mono text-xs uppercase tracking-[0.16em] text-accent-1">
+          <Link
+            href={`/projects/${xp.projectSlug}`}
+            className="group inline-flex items-center gap-1 font-mono text-xs uppercase tracking-[0.16em] text-accent-1"
+          >
             {ui.experience.viewProject}
             <ArrowUpRight className="size-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden />
           </Link>
@@ -114,18 +125,20 @@ export function Experience() {
       line.style.transform = "scaleY(1)";
       return;
     }
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        line,
-        { scaleY: 0 },
-        {
-          scaleY: 1,
-          ease: "none",
-          scrollTrigger: { trigger: list.current, start: "top 70%", end: "bottom 60%", scrub: 0.6 },
-        },
-      );
+    return withGsap(({ gsap }) => {
+      const ctx = gsap.context(() => {
+        gsap.fromTo(
+          line,
+          { scaleY: 0 },
+          {
+            scaleY: 1,
+            ease: "none",
+            scrollTrigger: { trigger: list.current, start: "top 70%", end: "bottom 60%", scrub: 0.6 },
+          },
+        );
+      });
+      return () => ctx.revert();
     });
-    return () => ctx.revert();
   }, [reduced]);
 
   return (
@@ -150,7 +163,9 @@ export function Experience() {
             <li key={xp.id} className="relative">
               {/* Node */}
               <span aria-hidden className="absolute -left-8 top-7 grid size-4 place-items-center sm:-left-14 sm:top-8 sm:ml-3">
-                {on && <span className="absolute inset-0 rounded-full bg-accent-1/50 animate-[pulse-ring_1.6s_cubic-bezier(0.16,1,0.3,1)_infinite]" />}
+                {on && (
+                  <span className="absolute inset-0 rounded-full bg-accent-1/50 animate-[pulse-ring_1.6s_cubic-bezier(0.16,1,0.3,1)_infinite]" />
+                )}
                 <span
                   className="size-2.5 rotate-45 transition-all duration-500"
                   style={{

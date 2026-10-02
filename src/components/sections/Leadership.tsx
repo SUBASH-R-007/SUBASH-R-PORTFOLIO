@@ -51,9 +51,13 @@ function Carousel({ lead }: { lead: Lead }) {
                 onClick={() => setI(n)}
                 aria-label={`${n + 1} / ${count}`}
                 aria-current={n === i}
-                className="h-1.5 rounded-full transition-all duration-300"
-                style={{ width: n === i ? 24 : 8, background: n === i ? "var(--accent-1)" : "var(--line-strong)" }}
-              />
+                className="grid h-6 min-w-6 place-items-center"
+              >
+                <span
+                  className="block h-1.5 rounded-full transition-all duration-300"
+                  style={{ width: n === i ? 24 : 8, background: n === i ? "var(--accent-1)" : "var(--line-strong)" }}
+                />
+              </button>
             ))}
           </div>
           <div className="flex gap-2">
@@ -72,7 +76,7 @@ function Carousel({ lead }: { lead: Lead }) {
 
 export function Leadership() {
   return (
-    <section id="leadership" className="container-hud scroll-mt-20 py-24 md:py-32">
+    <section id="leadership" className="cv-auto container-hud scroll-mt-20 py-24 md:py-32">
       <SectionHeader id="leadership" />
       {site.leadership.map((lead) => (
         <div key={lead.id} className="grid items-start gap-8 lg:grid-cols-[1fr_1fr] lg:gap-12">

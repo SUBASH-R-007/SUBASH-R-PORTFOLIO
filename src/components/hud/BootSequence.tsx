@@ -7,9 +7,11 @@ import { safeStorage } from "@/lib/hooks";
 import { EASE } from "@/lib/motion";
 import { setUI, useUI } from "@/lib/store";
 
-const TYPE_MS = 1500;
-const HOLD_MS = 350;
+const TYPE_MS = 1200;
+const HOLD_MS = 250;
 const POWER_MS = 700;
+// Not fully opaque: the hero stays painted underneath, so it counts as rendered from the first frame.
+const SHUTTER = "color-mix(in srgb, var(--bg) 94%, transparent)";
 
 /**
  * First-visit terminal boot. Present in the server HTML (so nothing flashes
@@ -65,12 +67,14 @@ export function BootSequence() {
     <div className="boot-overlay fixed inset-0 z-[100] items-center justify-center" aria-hidden={phase === "power"}>
       {/* Two shutters that part from the centre line (CRT power-on). */}
       <motion.div
-        className="absolute inset-x-0 top-0 h-1/2 bg-bg"
+        className="absolute inset-x-0 top-0 h-1/2"
+        style={{ background: SHUTTER }}
         animate={phase === "power" ? { y: "-100%" } : { y: 0 }}
         transition={{ duration: POWER_MS / 1000, ease: EASE, delay: 0.18 }}
       />
       <motion.div
-        className="absolute inset-x-0 bottom-0 h-1/2 bg-bg"
+        className="absolute inset-x-0 bottom-0 h-1/2"
+        style={{ background: SHUTTER }}
         animate={phase === "power" ? { y: "100%" } : { y: 0 }}
         transition={{ duration: POWER_MS / 1000, ease: EASE, delay: 0.18 }}
       />

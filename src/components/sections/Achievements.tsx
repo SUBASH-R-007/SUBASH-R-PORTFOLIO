@@ -9,7 +9,7 @@ import type { Achievement } from "@/content/types";
 import { Counter } from "@/components/ui/Counter";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { SmartImage } from "@/components/ui/SmartImage";
-import { gsap } from "@/lib/gsap";
+import { withGsap } from "@/lib/gsap";
 import { safeStorage, useIsTouch } from "@/lib/hooks";
 import { toast } from "@/lib/store";
 
@@ -26,14 +26,17 @@ function AwardCard({ a, i }: { a: Achievement; i: number }) {
         type="button"
         onClick={() => setFlipped((f) => !f)}
         aria-pressed={flipped}
-        aria-label={`${a.title}. ${flipped ? ui.achievements.back : ui.achievements.flip}`}
         className="relative block h-[26rem] w-full text-left transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] [transform-style:preserve-3d] motion-reduce:duration-0"
         style={{ transform: flipped ? "rotateY(180deg)" : "none" }}
       >
         {/* Front */}
         <div
           className={`glass brackets absolute inset-0 flex flex-col p-6 [backface-visibility:hidden] ${a.highlight ? "sm:p-8" : ""}`}
-          style={a.highlight ? { background: "linear-gradient(135deg, color-mix(in srgb, var(--accent-2) 22%, var(--glass)), var(--glass))" } : undefined}
+          style={
+            a.highlight
+              ? { background: "linear-gradient(135deg, color-mix(in srgb, var(--accent-2) 22%, var(--glass)), var(--glass))" }
+              : undefined
+          }
         >
           <div className="flex items-center justify-between">
             <span className="hud-label" style={{ color: "var(--accent-1)" }}>
@@ -42,12 +45,21 @@ function AwardCard({ a, i }: { a: Achievement; i: number }) {
             <span className="font-mono text-xs text-fg-muted">{a.date}</span>
           </div>
           <div className="relative my-auto grid place-items-center py-6">
-            <span aria-hidden className="absolute size-28 rounded-full opacity-60 blur-2xl" style={{ background: a.highlight ? "var(--accent-2)" : "var(--accent-1)" }} />
-            <span className="relative grid size-20 place-items-center rounded-full ring-1 ring-line-strong" style={{ background: "var(--bg-elev)" }}>
+            <span
+              aria-hidden
+              className="absolute size-28 rounded-full opacity-60 blur-2xl"
+              style={{ background: a.highlight ? "var(--accent-2)" : "var(--accent-1)" }}
+            />
+            <span
+              className="relative grid size-20 place-items-center rounded-full ring-1 ring-line-strong"
+              style={{ background: "var(--bg-elev)" }}
+            >
               <Trophy className="size-8" strokeWidth={1.25} style={{ color: "var(--accent-3)" }} aria-hidden />
             </span>
           </div>
-          <h3 className={`font-display font-semibold leading-snug text-fg ${a.highlight ? "text-2xl sm:text-3xl" : "text-xl"}`}>{a.title}</h3>
+          <h3 className={`font-display font-semibold leading-snug text-fg ${a.highlight ? "text-2xl sm:text-3xl" : "text-xl"}`}>
+            {a.title}
+          </h3>
           <p className="mt-2 text-sm leading-relaxed text-fg-muted">{a.context}</p>
           <span className="hud-label mt-4 text-[10px]">{ui.achievements.flip} ↻</span>
         </div>
@@ -89,50 +101,59 @@ export function Achievements() {
     const el = section.current;
     const list = track.current;
     if (!el || !list) return;
-    const mm = gsap.matchMedia();
-    mm.add("(min-width: 768px) and (prefers-reduced-motion: no-preference)", () => {
-      const distance = () => Math.max(0, list.scrollWidth - list.clientWidth);
-      gsap.to(list, {
-        x: () => -distance(),
-        ease: "none",
-        scrollTrigger: {
-          trigger: el,
-          start: "top top",
-          end: () => `+=${distance()}`,
-          pin: true,
-          scrub: 0.8,
-          invalidateOnRefresh: true,
-        },
+    return withGsap(({ gsap }) => {
+      const mm = gsap.matchMedia();
+      mm.add("(min-width: 768px) and (prefers-reduced-motion: no-preference)", () => {
+        const distance = () => Math.max(0, list.scrollWidth - list.clientWidth);
+        gsap.to(list, {
+          x: () => -distance(),
+          ease: "none",
+          scrollTrigger: {
+            trigger: el,
+            start: "top top",
+            end: () => `+=${distance()}`,
+            pin: true,
+            scrub: 0.8,
+            invalidateOnRefresh: true,
+          },
+        });
       });
+      return () => mm.revert();
     });
-    return () => mm.revert();
   }, []);
 
+  // GSAP's pin re-parents the section into a pin-spacer, so React owns an outer wrapper instead.
   return (
-    <section ref={section} id="achievements" className="scroll-mt-20 overflow-x-clip py-24 md:flex md:min-h-dvh md:flex-col md:justify-center md:py-16">
-      <div className="container-hud">
-        <SectionHeader
-          id="achievements"
-          aside={
-            <p className="flex items-baseline gap-2 font-mono text-sm uppercase tracking-[0.18em] text-fg-muted">
-              <Counter value={count} className="font-display text-4xl font-semibold text-fg text-glow" />
-              <span style={{ color: "var(--accent-3)" }}>{ui.achievements.unlocked}</span>
-            </p>
-          }
-        />
-      </div>
-      <ul
-        ref={track}
-        data-cursor="drag"
-        data-lenis-prevent-touch
-        className="flex snap-x snap-mandatory gap-5 overflow-x-auto px-4 pb-6 [scrollbar-width:none] sm:px-6 md:snap-none md:overflow-visible lg:px-10 xl:px-[max(2.5rem,calc((100vw-80rem)/2+2.5rem))]"
-        aria-label={site.sections.find((s) => s.id === "achievements")?.title}
+    <div>
+      <section
+        ref={section}
+        id="achievements"
+        className="scroll-mt-20 overflow-x-clip py-24 md:flex md:min-h-dvh md:flex-col md:justify-center md:py-16"
       >
-        {site.achievements.map((a, i) => (
-          <AwardCard key={a.id} a={a} i={i} />
-        ))}
-      </ul>
-      <p className="hud-label container-hud mt-2 text-[10px] md:hidden">{ui.achievements.drag} →</p>
-    </section>
+        <div className="container-hud">
+          <SectionHeader
+            id="achievements"
+            aside={
+              <p className="flex items-baseline gap-2 font-mono text-sm uppercase tracking-[0.18em] text-fg-muted">
+                <Counter value={count} className="font-display text-4xl font-semibold text-fg text-glow" />
+                <span style={{ color: "var(--accent-3)" }}>{ui.achievements.unlocked}</span>
+              </p>
+            }
+          />
+        </div>
+        <ul
+          ref={track}
+          data-cursor="drag"
+          data-lenis-prevent-touch
+          className="flex snap-x snap-mandatory gap-5 overflow-x-auto px-4 pb-6 [scrollbar-width:none] sm:px-6 md:snap-none md:overflow-visible lg:px-10 xl:px-[max(2.5rem,calc((100vw-80rem)/2+2.5rem))]"
+          aria-label={site.sections.find((s) => s.id === "achievements")?.title}
+        >
+          {site.achievements.map((a, i) => (
+            <AwardCard key={a.id} a={a} i={i} />
+          ))}
+        </ul>
+        <p className="hud-label container-hud mt-2 text-[10px] md:hidden">{ui.achievements.drag} →</p>
+      </section>
+    </div>
   );
 }

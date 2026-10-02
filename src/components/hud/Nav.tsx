@@ -62,8 +62,10 @@ export function Nav() {
           boxShadow: condensed ? "inset 0 0 0 1px var(--line-strong), 0 12px 40px -18px var(--glow)" : "none",
         }}
       >
-        <SectionLink id="top" className="flex shrink-0 items-center gap-3 rounded-full" aria-label={`${site.identity.name}, ${ui.nav.home}`}>
-          <LogoMark />
+        <div className="flex shrink-0 items-center gap-3">
+          <SectionLink id="top" className="rounded-full" aria-label={`${site.identity.name}, ${ui.nav.home}`}>
+            <LogoMark />
+          </SectionLink>
           <span
             className={`hud-label hidden transition-opacity duration-300 xl:flex xl:items-center xl:gap-2 ${condensed ? "xl:hidden" : ""}`}
           >
@@ -72,10 +74,10 @@ export function Nav() {
               <span className="relative inline-flex size-1.5 rounded-full bg-accent-3" />
             </span>
             {ui.nav.status}
-            <span className="text-fg-muted/60">·</span>
+            <span className="text-fg-muted">·</span>
             <Clock seconds={false} /> {site.identity.timezoneLabel}
           </span>
-        </SectionLink>
+        </div>
 
         <ul className="mx-auto hidden items-center gap-1 md:flex">
           {LINKS.map((s) => (

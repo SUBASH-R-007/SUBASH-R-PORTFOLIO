@@ -99,7 +99,7 @@ export function Lightbox({ items, index, onClose, onIndex }: Props) {
         >
           <div className="flex items-center justify-between gap-4 p-4 sm:px-6">
             <p className="hud-label truncate">
-              {index! + 1} / {items.length} <span className="text-fg-muted/50">{"//"}</span> {item.title}
+              {index! + 1} / {items.length} <span className="text-fg-muted">{"//"}</span> {item.title}
             </p>
             <button ref={closeBtn} type="button" onClick={onClose} className="icon-btn shrink-0" aria-label={ui.certifications.close}>
               <X className="size-4" aria-hidden />

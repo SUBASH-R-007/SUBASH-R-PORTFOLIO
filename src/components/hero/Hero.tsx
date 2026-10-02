@@ -28,8 +28,8 @@ export function Hero() {
   }, [booted, reduced]);
 
   const enter = (delay: number) => ({
-    initial: { opacity: 0, y: 18, filter: "blur(6px)" },
-    animate: booted ? { opacity: 1, y: 0, filter: "blur(0px)" } : undefined,
+    initial: { opacity: 0, y: 18 },
+    animate: booted ? { opacity: 1, y: 0 } : undefined,
     transition: { duration: 0.8, ease: EASE, delay },
   });
 
@@ -76,7 +76,7 @@ export function Hero() {
           </motion.p>
 
           <motion.p className="mx-auto mt-5 max-w-xl text-sm leading-relaxed text-fg-muted sm:text-base lg:mx-0" {...enter(0.35)}>
-            {site.identity.location} <span className="text-fg-muted/50">·</span>{" "}
+            {site.identity.location} <span className="text-fg-muted">·</span>{" "}
             <span className="text-fg">{site.identity.status}</span>
           </motion.p>
 

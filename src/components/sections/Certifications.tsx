@@ -44,7 +44,7 @@ export function Certifications() {
   const items = site.certifications.map(toItem);
 
   return (
-    <section id="certifications" className="container-hud scroll-mt-20 py-24 md:py-32">
+    <section id="certifications" className="cv-auto container-hud scroll-mt-20 py-24 md:py-32">
       <SectionHeader id="certifications" />
       <motion.ul
         className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3"

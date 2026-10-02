@@ -48,7 +48,7 @@ export function Placeholder({ kind, path, compact = false, className = "" }: Pro
           </span>
         )}
         {showPath && !compact && (
-          <span className="max-w-full break-all font-mono text-[10px] leading-snug text-fg-muted/80">{path}</span>
+          <span className="max-w-full break-all font-mono text-[10px] leading-snug text-fg-muted">{path}</span>
         )}
       </div>
     </div>

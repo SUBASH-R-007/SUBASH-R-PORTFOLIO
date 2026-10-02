@@ -12,13 +12,13 @@ export function Footer() {
         <div className="flex items-center gap-3">
           <LogoMark size={32} />
           <p className="font-mono text-xs text-fg-muted">
-            {ui.footer.credit} <span className="text-fg-muted/60">·</span> © {year}
+            {ui.footer.credit} <span className="text-fg-muted">·</span> © {year}
           </p>
         </div>
         <p className="hud-label flex items-center gap-2">
           <span style={{ color: "var(--accent-1)" }}>{ui.footer.time}</span>
           <Clock className="text-fg" /> {site.identity.timezoneLabel}
-          <span className="text-fg-muted/60">·</span> {site.identity.location}
+          <span className="text-fg-muted">·</span> {site.identity.location}
         </p>
         <SectionLink
           id="top"

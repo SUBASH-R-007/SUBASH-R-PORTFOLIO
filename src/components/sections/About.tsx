@@ -120,7 +120,7 @@ function DualOrbit() {
           </span>
         </div>
       </motion.div>
-      <p className="hud-label mt-3 text-center text-[10px] text-fg-muted/70">{ui.about.orbitHint}</p>
+      <p className="hud-label mt-3 text-center text-[10px]">{ui.about.orbitHint}</p>
     </div>
   );
 }
@@ -144,8 +144,8 @@ export function About() {
                 key={i}
                 className="inline"
                 variants={{
-                  hidden: { opacity: 0.12, filter: "blur(4px)" },
-                  show: { opacity: 1, filter: "blur(0px)", transition: { duration: 0.8, ease: EASE } },
+                  hidden: { opacity: 0 },
+                  show: { opacity: 1, transition: { duration: 0.8, ease: EASE } },
                 }}
               >
                 {line}{" "}
@@ -154,29 +154,25 @@ export function About() {
           </motion.p>
 
           <dl className="mt-10 grid gap-3 sm:grid-cols-2">
-            <div className="glass flex items-start gap-3 p-4">
-              <MapPin className="mt-0.5 size-4 text-accent-1" aria-hidden />
-              <div>
-                <dt className="hud-label">{ui.about.location}</dt>
-                <dd className="mt-1 text-fg">{site.identity.location}</dd>
+            {[
+              { icon: MapPin, color: "text-accent-1", term: ui.about.location, value: site.identity.location, wide: false },
+              { icon: Radio, color: "text-accent-3", term: ui.about.status, value: site.identity.status, wide: false },
+              {
+                icon: GraduationCap,
+                color: "text-accent-2",
+                term: ui.about.tracks,
+                value: site.education.map((e) => `${e.degree} ${e.shortName}`).join("  ⟂  "),
+                wide: true,
+              },
+            ].map(({ icon: Icon, color, term, value, wide }) => (
+              <div key={term} className={`glass p-4 pl-11 ${wide ? "sm:col-span-2" : ""}`}>
+                <dt className="hud-label relative">
+                  <Icon className={`absolute -left-7 -top-0.5 size-4 ${color}`} aria-hidden />
+                  {term}
+                </dt>
+                <dd className="mt-1 text-fg">{value}</dd>
               </div>
-            </div>
-            <div className="glass flex items-start gap-3 p-4">
-              <Radio className="mt-0.5 size-4 text-accent-3" aria-hidden />
-              <div>
-                <dt className="hud-label">{ui.about.status}</dt>
-                <dd className="mt-1 text-fg">{site.identity.status}</dd>
-              </div>
-            </div>
-            <div className="glass flex items-start gap-3 p-4 sm:col-span-2">
-              <GraduationCap className="mt-0.5 size-4 text-accent-2" aria-hidden />
-              <div>
-                <dt className="hud-label">{ui.about.tracks}</dt>
-                <dd className="mt-1 text-fg">
-                  {site.education.map((e) => `${e.degree} ${e.shortName}`).join("  ⟂  ")}
-                </dd>
-              </div>
-            </div>
+            ))}
           </dl>
 
           {alt && (

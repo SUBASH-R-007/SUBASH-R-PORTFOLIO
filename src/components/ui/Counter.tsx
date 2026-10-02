@@ -36,7 +36,12 @@ export function Counter({
 
   useEffect(() => {
     const el = ref.current;
-    if (!el || done.current || reduced) return;
+    if (!el || done.current) return;
+    if (reduced) {
+      // Static final value (it may have been zeroed before the preference resolved).
+      el.textContent = final;
+      return;
+    }
     if (!inView || !ready) {
       el.textContent = `${prefix}${formatNumber(0, decimals, grouped)}${suffix}`;
       return;
@@ -50,7 +55,7 @@ export function Counter({
       },
     });
     return () => controls.stop();
-  }, [inView, ready, reduced, value, decimals, prefix, suffix, grouped, duration]);
+  }, [inView, ready, reduced, value, decimals, prefix, suffix, grouped, duration, final]);
 
   return (
     <span ref={ref} className={className} aria-label={final} suppressHydrationWarning>

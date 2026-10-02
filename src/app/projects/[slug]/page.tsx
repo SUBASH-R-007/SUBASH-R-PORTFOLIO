@@ -66,7 +66,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
       <header className="mt-8 grid gap-8 lg:grid-cols-[1fr_1.2fr] lg:items-end">
         <div>
           <p className="hud-label">
-            {p.context} <span className="text-fg-muted/50">·</span> {p.period}
+            {p.context} <span className="text-fg-muted">·</span> {p.period}
           </p>
           <ViewTransition name={`title-${p.slug}`} share="morph" default="none">
             <h1 className="mt-4 font-display text-4xl font-bold leading-[1.02] tracking-tight text-fg sm:text-5xl lg:text-6xl">{p.title}</h1>

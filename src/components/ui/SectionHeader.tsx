@@ -23,7 +23,7 @@ export function SectionHeader({ id, aside }: { id: string; aside?: React.ReactNo
         <p className="hud-label pt-4">
           <span style={{ color: "var(--accent-1)" }}>MODULE {s.index}</span> {"// "}
           {s.code}
-          <span className="ml-3 hidden text-fg-muted/70 sm:inline">[{s.kicker}]</span>
+          <span className="ml-3 hidden text-fg-muted sm:inline">[{s.kicker}]</span>
         </p>
         <ScrambleText
           as="h2"

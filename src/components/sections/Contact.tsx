@@ -145,7 +145,7 @@ function Terminal() {
           autoComplete="off"
           autoCapitalize="off"
           spellCheck={false}
-          className="min-w-0 flex-1 bg-transparent text-fg caret-[var(--accent-1)] outline-none placeholder:text-fg-muted/50"
+          className="min-w-0 flex-1 bg-transparent text-fg caret-[var(--accent-1)] outline-none placeholder:text-fg-muted"
           placeholder="help"
         />
       </form>
@@ -211,7 +211,7 @@ function ContactCard() {
 
 export function Contact() {
   return (
-    <section id="contact" className="container-hud scroll-mt-20 py-24 md:py-32">
+    <section id="contact" className="cv-auto container-hud scroll-mt-20 py-24 md:py-32">
       <SectionHeader id="contact" />
       <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
         <Terminal />

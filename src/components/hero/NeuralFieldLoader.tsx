@@ -9,11 +9,17 @@ import { GradientMesh } from "./GradientMesh";
 const NeuralField = dynamic(() => import("./NeuralField"), { ssr: false });
 
 let webgl: boolean | null = null;
+/** Hardware WebGL only: software renderers (SwiftShader, llvmpipe) would make the page janky. */
 function supportsWebGL() {
   if (webgl !== null) return webgl;
   try {
     const c = document.createElement("canvas");
-    webgl = !!(c.getContext("webgl2") || c.getContext("webgl"));
+    const gl = (c.getContext("webgl2") || c.getContext("webgl")) as WebGLRenderingContext | null;
+    if (!gl) return (webgl = false);
+    const info = gl.getExtension("WEBGL_debug_renderer_info");
+    const renderer = info ? String(gl.getParameter(info.UNMASKED_RENDERER_WEBGL)) : "";
+    webgl = !/swiftshader|llvmpipe|softpipe|software|basic render/i.test(renderer);
+    gl.getExtension("WEBGL_lose_context")?.loseContext();
   } catch {
     webgl = false;
   }
@@ -42,14 +48,24 @@ export function NeuralFieldLoader({ shape }: { shape: number }) {
 
   const capable = mounted && !reduced && supportsWebGL() && !lowPower();
 
+  // On phones, the 3D bundle waits for the first interaction so it never competes with first load.
+  const [engaged, setEngaged] = useState(false);
   useEffect(() => {
-    if (!capable || !booted) return;
+    if (!capable || !small || engaged) return;
+    const go = () => setEngaged(true);
+    const events = ["pointerdown", "touchstart", "scroll", "keydown"] as const;
+    events.forEach((e) => window.addEventListener(e, go, { once: true, passive: true }));
+    return () => events.forEach((e) => window.removeEventListener(e, go));
+  }, [capable, small, engaged]);
+
+  useEffect(() => {
+    if (!capable || !booted || (small && !engaged)) return;
     const hasIdle = "requestIdleCallback" in window;
     const id = hasIdle
       ? window.requestIdleCallback(() => setIdle(true), { timeout: 1500 })
       : window.setTimeout(() => setIdle(true), 300);
     return () => (hasIdle ? window.cancelIdleCallback(id) : window.clearTimeout(id));
-  }, [capable, booted]);
+  }, [capable, booted, small, engaged]);
 
   return (
     <div className="absolute inset-0">

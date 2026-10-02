@@ -9,7 +9,7 @@ import { ChipList } from "@/components/ui/Chip";
 import { Counter } from "@/components/ui/Counter";
 import { Magnetic } from "@/components/ui/Magnetic";
 import { featuredProjects } from "@/lib/content";
-import { gsap } from "@/lib/gsap";
+import { withGsap } from "@/lib/gsap";
 import { CoverMedia } from "./CoverMedia";
 
 function Panel({ p, i, total }: { p: Project; i: number; total: number }) {
@@ -18,7 +18,7 @@ function Panel({ p, i, total }: { p: Project; i: number; total: number }) {
       <Link
         href={`/projects/${p.slug}`}
         className="group relative block aspect-[16/10] overflow-hidden md:aspect-auto md:min-h-[26rem]"
-        aria-label={`${p.title}: ${ui.projects.caseStudy}`}
+        aria-hidden
         tabIndex={-1}
       >
         <ViewTransition name={`cover-${p.slug}`} share="morph" default="none">
@@ -26,7 +26,10 @@ function Panel({ p, i, total }: { p: Project; i: number; total: number }) {
             <CoverMedia project={p} sizes="(min-width: 768px) 55vw, 100vw" />
           </div>
         </ViewTransition>
-        <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-bg/70 via-transparent to-transparent md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-bg/40" />
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-gradient-to-t from-bg/70 via-transparent to-transparent md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-bg/40"
+        />
         <span className="hud-label absolute left-4 top-4 rounded-full bg-bg/70 px-2.5 py-1 backdrop-blur">
           SYS {String(i + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
         </span>
@@ -34,7 +37,7 @@ function Panel({ p, i, total }: { p: Project; i: number; total: number }) {
 
       <div className="flex flex-col p-6 sm:p-8">
         <p className="hud-label">
-          {p.context} <span className="text-fg-muted/50">·</span> {p.period}
+          {p.context} <span className="text-fg-muted">·</span> {p.period}
         </p>
         <ViewTransition name={`title-${p.slug}`} share="morph" default="none">
           <h3 className="mt-3 font-display text-2xl font-semibold leading-tight text-fg sm:text-3xl">{p.title}</h3>
@@ -87,21 +90,23 @@ export function FeaturedPanels() {
   useEffect(() => {
     const el = root.current;
     if (!el) return;
-    const mm = gsap.matchMedia();
-    mm.add("(min-width: 768px) and (prefers-reduced-motion: no-preference)", () => {
-      const panels = gsap.utils.toArray<HTMLElement>(el.querySelectorAll("[data-panel]"));
-      panels.forEach((panel, i) => {
-        const next = panels[i + 1];
-        if (!next) return;
-        gsap.to(panel.querySelector(".panel-inner"), {
-          scale: 0.92,
-          opacity: 0.35,
-          ease: "none",
-          scrollTrigger: { trigger: next, start: "top bottom-=10%", end: "top top+=120", scrub: true },
+    return withGsap(({ gsap }) => {
+      const mm = gsap.matchMedia();
+      mm.add("(min-width: 768px) and (prefers-reduced-motion: no-preference)", () => {
+        const panels = gsap.utils.toArray<HTMLElement>(el.querySelectorAll("[data-panel]"));
+        panels.forEach((panel, i) => {
+          const next = panels[i + 1];
+          if (!next) return;
+          gsap.to(panel.querySelector(".panel-inner"), {
+            scale: 0.92,
+            opacity: 0.35,
+            ease: "none",
+            scrollTrigger: { trigger: next, start: "top bottom-=10%", end: "top top+=120", scrub: true },
+          });
         });
       });
+      return () => mm.revert();
     });
-    return () => mm.revert();
   }, []);
 
   return (

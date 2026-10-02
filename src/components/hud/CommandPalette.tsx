@@ -22,9 +22,6 @@ function Item({ value, onSelect, icon, children, hint }: { value: string; onSele
   );
 }
 
-const groupClass =
-  "[&_[cmdk-group-heading]]:hud-label [&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:pb-1.5 [&_[cmdk-group-heading]]:pt-3 [&_[cmdk-group-heading]]:text-[10px]";
-
 /** Ctrl/⌘ + K palette. Loaded on demand the first time it opens. */
 export default function CommandPalette() {
   const open = useUI((s) => s.paletteOpen);
@@ -56,27 +53,27 @@ export default function CommandPalette() {
           <span className="font-mono text-accent-1">&gt;</span>
           <Command.Input
             placeholder={ui.palette.placeholder}
-            className="h-14 flex-1 bg-transparent font-mono text-sm text-fg outline-none placeholder:text-fg-muted/60"
+            className="h-14 flex-1 bg-transparent font-mono text-sm text-fg outline-none placeholder:text-fg-muted"
           />
           <kbd className="kbd">ESC</kbd>
         </div>
         <Command.List className="max-h-[min(60vh,26rem)] overflow-y-auto p-2" data-lenis-prevent>
           <Command.Empty className="px-3 py-8 text-center font-mono text-sm text-fg-muted">{ui.palette.empty}</Command.Empty>
-          <Command.Group heading={ui.palette.sections} className={groupClass}>
+          <Command.Group heading={ui.palette.sections}>
             {site.sections.map((s) => (
               <Item key={s.id} value={`section ${s.title} ${s.nav} ${s.code}`} onSelect={goSection(s.id)} icon={<Hash className="size-4" />} hint={s.index}>
-                {s.title} <span className="text-fg-muted/60">· {s.nav}</span>
+                {s.title} <span className="text-fg-muted">· {s.nav}</span>
               </Item>
             ))}
           </Command.Group>
-          <Command.Group heading={ui.palette.projects} className={groupClass}>
+          <Command.Group heading={ui.palette.projects}>
             {site.projects.map((p) => (
               <Item key={p.slug} value={`project ${p.title} ${p.context}`} onSelect={run(() => router.push(`/projects/${p.slug}`))} icon={<ArrowRight className="size-4" />} hint={p.period}>
                 {p.title}
               </Item>
             ))}
           </Command.Group>
-          <Command.Group heading={ui.palette.actions} className={groupClass}>
+          <Command.Group heading={ui.palette.actions}>
             <Item
               value="copy email"
               icon={<Copy className="size-4" />}

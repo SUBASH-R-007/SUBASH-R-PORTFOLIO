@@ -261,7 +261,7 @@ export function Skills() {
   useChipGlow(active);
 
   return (
-    <section id="skills" className="container-hud scroll-mt-20 py-24 md:py-32">
+    <section id="skills" className="cv-auto container-hud scroll-mt-20 py-24 md:py-32">
       <SectionHeader id="skills" aside={<p className="hud-label">{site.skills.length} {ui.skills.nodes} · {site.skillCategories.length} {ui.skills.hubs}</p>} />
       <div className="grid gap-8 lg:grid-cols-[1fr_20rem]">
         <div className={desktop ? "glass relative overflow-hidden p-2" : ""}>
