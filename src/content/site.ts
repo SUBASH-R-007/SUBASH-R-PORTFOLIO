@@ -533,6 +533,10 @@ export const ui = {
     writeup: "Write-up",
     next: "Next project",
     related: "From the mission log",
+    context: "Context",
+    period: "Period",
+    domain: "Domain",
+    open: "Open",
   },
   skills: {
     hint: "Hover or tap a skill to trace where it's used. Select it to filter projects.",

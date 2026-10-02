@@ -512,3 +512,9 @@ html[data-cursor="on"] textarea {
     transform: translateX(300%);
   }
 }
+
+/* Slide-in offsets and orbit art must never cause sideways scroll. `clip` keeps sticky children working. */
+main > section,
+main > article {
+  overflow-x: clip;
+}
